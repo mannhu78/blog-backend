@@ -6,13 +6,14 @@ const postRoutes = require("./routes/postRoutes")
 const authRoutes = require("./routes/authRoutes")
 const commentRoutes = require("./routes/comments")
 const userRoutes = require("./routes/userRoutes")
+const PORT = process.env.PORT || 5000
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
-mongoose.connect("mongodb+srv://admin:mannhu7804@cluster0.c4szm8q.mongodb.net/?appName=Cluster0")
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err))
 
@@ -20,9 +21,9 @@ app.get("/", (req, res) => {
     res.send("Blog API running")
 })
 
-app.use("/users", userRoutes)
+app.use("/api/users", userRoutes)
 
-app.use("/posts", postRoutes)
+app.use("/api/posts", postRoutes)
 
 
 app.get("/create", async (req, res) => {
@@ -37,10 +38,10 @@ app.get("/create", async (req, res) => {
     res.send("Post created")
 })
 
-app.use("/auth", authRoutes)
+app.use("/api/auth", authRoutes)
 
-app.use("/comments", commentRoutes)
+app.use("/api/comments", commentRoutes)
 
-app.listen(5000, () => {
-    console.log("Server running on port 5000")
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
 })
